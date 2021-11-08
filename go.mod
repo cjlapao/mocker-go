@@ -9,6 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/jaswdr/faker v1.4.2 // indirect
+	github.com/mb-14/gomarkov v0.0.0-20210216094942-a5b484cc0243 // indirect
 	github.com/rs/xid v1.3.0
 	github.com/xdg/scram v1.0.3 // indirect
 	github.com/xdg/stringprep v1.0.3 // indirect
