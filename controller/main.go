@@ -45,6 +45,7 @@ func NewAPIController(router *mux.Router, repo repositories.Repository) *Control
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/validate", controller.Validate).Methods("GET")
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator", controller.Generator).Methods("GET")
 
+	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/train", controller.TrainModel).Methods("GET")
 	globalController = &controller
 	return globalController
 }

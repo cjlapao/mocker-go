@@ -13,24 +13,27 @@ type Mocker struct {
 	Generator *rand.Rand
 }
 
-func (m Mocker) Company() Company {
-	return Company{&m}
+func (m Mocker) Company() *CompanyGenerator {
+	return NewCompanyGenerator(New())
+}
+
+func (m Mocker) Names() *NameGenerator {
+	return NewNameGenerator(New())
 }
 
 func (m Mocker) Boolean() Boolean {
-	return Boolean{&m}
+	return Boolean{New()}
 }
 
-func New() (m Mocker) {
+func New() *Mocker {
 	seed := rand.NewSource(time.Now().Unix())
-	m = NewWithSeed(seed)
-	return
+	return NewWithSeed(seed)
 }
 
-func NewWithSeed(src rand.Source) (f Mocker) {
+func NewWithSeed(src rand.Source) *Mocker {
 	generator := rand.New(src)
-	f = Mocker{Generator: generator}
-	return
+	m := Mocker{Generator: generator}
+	return &m
 }
 
 func (m *Mocker) RandomStringElement(a []string) string {

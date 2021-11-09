@@ -2,7 +2,6 @@ package mocker
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/cjlapao/mocker-go/markov"
 )
@@ -34,40 +33,26 @@ var (
 	}
 )
 
-type Company struct {
-	Mocker *Mocker
+var _companyGenerator *CompanyGenerator
+
+type CompanyGenerator struct {
+	Generator *markov.MarkovGenerator
+	Mocker    *Mocker
 }
 
-func testMarkov() {
-	//Create a chain of order 2
-	chain := markov.NewMarkovChain(2)
+func NewCompanyGenerator(mocker *Mocker) *CompanyGenerator {
+	if _companyGenerator != nil {
+		return _companyGenerator
+	}
 
-	//Feed in training data
-	chain.Add(strings.Split("I want a cheese burger", " "))
-	chain.Add(strings.Split("I want a chilled sprite", " "))
-	chain.Add(strings.Split("I want to go to the movies", " "))
+	_companyGenerator = &CompanyGenerator{}
+	_companyGenerator.Mocker = mocker
+	_companyGenerator.Generator = markov.NewGenerator()
 
-	//Get transition probability of a sequence
-	// prob, _ := chain.TransitionProbability("a", []string{"I", "want"})
-	// fmt.Println(prob)
-	//Output: 0.6666666666666666
-
-	//You can even generate new text based on an initial seed
-	chain.Add(strings.Split("Mother should I build the wall?", " "))
-	chain.Add(strings.Split("Mother should I run for President?", " "))
-	chain.Add(strings.Split("Mother should I trust the government?", " "))
-	next, _ := chain.Generate([]string{"should", "I"})
-	fmt.Println(next)
-
-	//The chain is JSON serializable
-	// jsonObj, _ := json.Marshal(chain)
-	// err := ioutil.WriteFile("model.json", jsonObj, 0644)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	return _companyGenerator
 }
 
-func (c Company) Name() string {
+func (c *CompanyGenerator) Name() string {
 	// datasource := data.GetCompanyNameDatasource()
 	// sp.Logger.Info(datasource.Names[46])
 	// chain := markov.NewChain(2)
@@ -99,12 +84,12 @@ func (c Company) Name() string {
 	// 	name = fmt.Sprintf("%v, %v", name, c.Mocker.RandomStringElement(companyDenomination))
 	// }
 
-	name := testerPokemon(false)
+	name := c.Generator.Generate(markov.CompanyNamesModel)
 
 	return name
 }
 
-func (c Company) JobTitle() string {
+func (c *CompanyGenerator) JobTitle() string {
 	titleSize := c.Mocker.IntBetween(1, 3)
 
 	switch titleSize {
