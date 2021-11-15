@@ -25,6 +25,10 @@ func (m Mocker) Boolean() Boolean {
 	return Boolean{New()}
 }
 
+func (m Mocker) Address() *AddressGenerator {
+	return NewAddress()
+}
+
 func New() *Mocker {
 	seed := rand.NewSource(time.Now().Unix())
 	return NewWithSeed(seed)
@@ -54,4 +58,10 @@ func (m *Mocker) IntBetween(min, max int) int {
 	}
 
 	return m.Generator.Intn(diff+1) + min
+}
+
+func (m *Mocker) RandomElement(a []string) string {
+	index := m.IntBetween(0, len(a)-1)
+
+	return a[index]
 }

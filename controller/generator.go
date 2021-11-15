@@ -31,6 +31,12 @@ func (c *Controller) Generator(w http.ResponseWriter, r *http.Request) {
 	case "boolean.chancesof":
 		booleanResult := mocker.Boolean().ChanceOfBool(75)
 		message = fmt.Sprintf("[Fake boolean.changesOf], %v", booleanResult)
+	case "address.city":
+		city := mocker.Address().City()
+		message = fmt.Sprintf("[Fake address.country], %v", city)
+	case "address.country":
+		country := mocker.Address().Country()
+		message = fmt.Sprintf("[Fake address.country], %v", country)
 	case "template":
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
