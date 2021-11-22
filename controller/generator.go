@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/cjlapao/mocker-go/entities"
 	"github.com/cjlapao/mocker-go/markov"
@@ -37,6 +38,27 @@ func (c *Controller) Generator(w http.ResponseWriter, r *http.Request) {
 	case "address.country":
 		country := mocker.Address().Country()
 		message = fmt.Sprintf("[Fake address.country], %v", country)
+	case "date.between":
+		dateInbetween := mocker.Date().Between(time.Date(2019, 1, 1, 0, 0, 0, 0, time.Local), time.Date(2021, 10, 31, 23, 59, 59, 999, time.Local))
+		message = fmt.Sprintf("[Fake date.between], %v", dateInbetween)
+	case "date.recent":
+		dateRecent := mocker.Date().Recent(90)
+		message = fmt.Sprintf("[Fake date.recent], %v", dateRecent)
+	case "date.soon":
+		dateSoon := mocker.Date().Recent(30)
+		message = fmt.Sprintf("[Fake date.soon], %v", dateSoon)
+	case "date.month":
+		dateMonth := mocker.Date().Month()
+		message = fmt.Sprintf("[Fake date.month], %v", dateMonth)
+	case "date.weekday":
+		result := mocker.Date().Weekday()
+		message = fmt.Sprintf("[Fake date.weekday], %v", result)
+	case "date.past":
+		result := mocker.Date().Past(5)
+		message = fmt.Sprintf("[Fake date.past], %v", result)
+	case "date.future":
+		result := mocker.Date().Future(3)
+		message = fmt.Sprintf("[Fake date.future], %v", result)
 	case "template":
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -50,11 +72,31 @@ func (c *Controller) Generator(w http.ResponseWriter, r *http.Request) {
 		message = fmt.Sprint("Hello Faker")
 	}
 
+	if strings.Contains(queryType, "lorem.") {
+		message = loremGenerator(mocker, queryType)
+	}
+
 	response := entities.MockerApiResponse{
 		Message: message,
 	}
 
 	json.NewEncoder(w).Encode(response)
+}
+
+func loremGenerator(mocker *mocker.Mocker, query string) string {
+	switch strings.ToLower(query) {
+	case "lorem.word":
+		result := mocker.Lorem().Word()
+		return result
+	case "lorem.words":
+		result := mocker.Lorem().Words(10)
+		return result
+	case "lorem.sentence":
+		result := mocker.Lorem().Sentence(10)
+		return result
+	default:
+		return "Unknown query"
+	}
 }
 
 func (c *Controller) TrainModel(w http.ResponseWriter, r *http.Request) {

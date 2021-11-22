@@ -29,6 +29,14 @@ func (m Mocker) Address() *AddressGenerator {
 	return NewAddress()
 }
 
+func (m Mocker) Date() *DateGenerator {
+	return NewDateGenerator(New())
+}
+
+func (m Mocker) Lorem() *LoremGenerator {
+	return NewLoremGenerator(New())
+}
+
 func New() *Mocker {
 	seed := rand.NewSource(time.Now().Unix())
 	return NewWithSeed(seed)
@@ -57,6 +65,10 @@ func (m *Mocker) IntBetween(min, max int) int {
 		return min
 	}
 
+	if diff < 0 {
+		diff = min - max
+		return m.Generator.Intn(diff+1) + max
+	}
 	return m.Generator.Intn(diff+1) + min
 }
 

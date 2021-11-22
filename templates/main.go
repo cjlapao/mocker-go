@@ -21,6 +21,7 @@ func (c Company) JobTitle() string {
 type Test struct {
 	NameCalculated string
 	Company        Company
+	Date           Date
 }
 
 func (t Test) Name() string {
