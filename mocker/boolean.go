@@ -5,15 +5,15 @@ type Boolean struct {
 }
 
 func (b Boolean) Bool() bool {
-	return b.Mocker.IntBetween(0, 100) > 50
+	return b.Mocker.Random().IntBetween(0, 100) > 50
 }
 
 func (b Boolean) BoolAsInt() int {
-	return b.Mocker.RandomIntElement([]int{0, 1})
+	return b.Mocker.Random().RandomIntElement([]int{0, 1})
 }
 
 func (b Boolean) BoolAsString(trueValue string, falseValue string) string {
-	return b.Mocker.RandomStringElement([]string{trueValue, falseValue})
+	return b.Mocker.Random().RandomStringElement([]string{trueValue, falseValue})
 }
 
 func (b Boolean) ChanceOfBool(c int) bool {
@@ -22,6 +22,6 @@ func (b Boolean) ChanceOfBool(c int) bool {
 	} else if c >= 100 {
 		return true
 	} else {
-		return b.Mocker.IntBetween(0, 100) < c
+		return b.Mocker.Random().IntBetween(0, 100) < c
 	}
 }

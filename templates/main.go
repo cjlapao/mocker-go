@@ -22,6 +22,7 @@ type Test struct {
 	NameCalculated string
 	Company        Company
 	Date           Date
+	Lorem          Lorem
 }
 
 func (t Test) Name() string {

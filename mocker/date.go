@@ -24,13 +24,13 @@ func NewDateGenerator(mocker *Mocker) *DateGenerator {
 
 func (d *DateGenerator) Between(initialDate time.Time, finalDate time.Time) time.Time {
 	if finalDate.After(initialDate) {
-		randomYear := d.Mocker.IntBetween(initialDate.Year(), finalDate.Year())
-		randomMonth := d.Mocker.IntBetween(int(initialDate.Month()), int(finalDate.Month()))
-		randomDay := d.Mocker.IntBetween(int(initialDate.Day()), int(finalDate.Day()))
-		randomHour := d.Mocker.IntBetween(int(initialDate.Hour()), int(finalDate.Hour()))
-		randomMinute := d.Mocker.IntBetween(int(initialDate.Minute()), int(finalDate.Minute()))
-		randomSecond := d.Mocker.IntBetween(int(initialDate.Second()), int(finalDate.Second()))
-		randomNanosecond := d.Mocker.IntBetween(int(initialDate.Nanosecond()), int(finalDate.Nanosecond()))
+		randomYear := d.Mocker.Random().IntBetween(initialDate.Year(), finalDate.Year())
+		randomMonth := d.Mocker.Random().IntBetween(int(initialDate.Month()), int(finalDate.Month()))
+		randomDay := d.Mocker.Random().IntBetween(int(initialDate.Day()), int(finalDate.Day()))
+		randomHour := d.Mocker.Random().IntBetween(int(initialDate.Hour()), int(finalDate.Hour()))
+		randomMinute := d.Mocker.Random().IntBetween(int(initialDate.Minute()), int(finalDate.Minute()))
+		randomSecond := d.Mocker.Random().IntBetween(int(initialDate.Second()), int(finalDate.Second()))
+		randomNanosecond := d.Mocker.Random().IntBetween(int(initialDate.Nanosecond()), int(finalDate.Nanosecond()))
 		result := time.Date(randomYear, time.Month(randomMonth), randomDay, randomHour, randomMinute, randomSecond, randomNanosecond, time.UTC)
 		println("Year: " + result.Format(time.RFC3339))
 		return result
@@ -55,7 +55,7 @@ func (d *DateGenerator) Recent(days int) time.Time {
 		return time.Now()
 	}
 
-	randomDay := d.Mocker.IntBetween(0, days)
+	randomDay := d.Mocker.Random().IntBetween(0, days)
 	duration := time.Duration(randomDay * 24 * int(time.Hour))
 	numberHours := math.Abs(float64(duration)) * -1
 
@@ -69,7 +69,7 @@ func (d *DateGenerator) Soon(days int) time.Time {
 		return time.Now()
 	}
 
-	randomDay := d.Mocker.IntBetween(0, days)
+	randomDay := d.Mocker.Random().IntBetween(0, days)
 	duration := time.Duration(randomDay * 24 * int(time.Hour))
 
 	finalDate := time.Now().Add(duration)
@@ -89,14 +89,14 @@ func (d *DateGenerator) Future(years int) time.Time {
 }
 
 func (d *DateGenerator) Month() string {
-	randomMonthInt := d.Mocker.IntBetween(1, 12)
+	randomMonthInt := d.Mocker.Random().IntBetween(1, 12)
 
 	month := time.Month(randomMonthInt)
 	return month.String()
 }
 
 func (d *DateGenerator) Weekday() string {
-	randomWeekday := d.Mocker.IntBetween(0, 6)
+	randomWeekday := d.Mocker.Random().IntBetween(0, 6)
 
 	println(time.Weekday(0).String())
 	weekDay := time.Weekday(randomWeekday)

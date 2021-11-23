@@ -18,16 +18,16 @@ func (g *AddressGenerator) City() string {
 	hasSuffix := g.Mocker.Boolean().ChanceOfBool(25)
 	result := ""
 	if hasPrefix {
-		result = g.Mocker.RandomElement(models.CityPrefix[:])
+		result = g.Mocker.Random().RandomElement(models.CityPrefix[:])
 	}
-	result = result + " " + g.Mocker.RandomElement(models.UsCityNames[:])
+	result = result + " " + g.Mocker.Random().RandomElement(models.UsCityNames[:])
 	if hasSuffix {
-		result = result + g.Mocker.RandomElement(models.CitySuffix[:])
+		result = result + g.Mocker.Random().RandomElement(models.CitySuffix[:])
 	}
 
 	return result
 }
 
 func (g *AddressGenerator) Country() string {
-	return g.Mocker.RandomElement(models.Country[:])
+	return g.Mocker.Random().RandomElement(models.Country[:])
 }

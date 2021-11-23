@@ -3,8 +3,11 @@ package mocker
 import (
 	"strings"
 
+	"github.com/cjlapao/mocker-go/help"
 	"github.com/cjlapao/mocker-go/models"
 )
+
+const NEW_LINE = "\n"
 
 var _loremGenerator *LoremGenerator
 
@@ -24,13 +27,13 @@ func NewLoremGenerator(mocker *Mocker) *LoremGenerator {
 }
 
 func (l *LoremGenerator) Word() string {
-	return l.Mocker.RandomElement(models.LoremWords[:])
+	return l.Mocker.Random().RandomElement(models.LoremWords[:])
 }
 
 func (l *LoremGenerator) Words(number int) string {
 	words := ""
 	for i := 0; i < number; i++ {
-		word := l.Mocker.RandomElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomElement(models.LoremWords[:])
 		if len(words) == 0 {
 			words = word
 		} else {
@@ -44,7 +47,7 @@ func (l *LoremGenerator) Words(number int) string {
 func (l *LoremGenerator) Sentence(wordCount int) string {
 	sentence := ""
 	for i := 0; i < wordCount; i++ {
-		word := l.Mocker.RandomElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomElement(models.LoremWords[:])
 		if len(sentence) == 0 {
 			sentence = strings.ToUpper(string(word[0])) + word[1:]
 		} else {
@@ -52,5 +55,92 @@ func (l *LoremGenerator) Sentence(wordCount int) string {
 		}
 	}
 
-	return sentence
+	return sentence + "."
+}
+
+func (l *LoremGenerator) Sentences(sentenceCount int, separator string) string {
+	sentences := ""
+	if separator == "" {
+		separator = " "
+	}
+
+	for i := 0; i < sentenceCount; i++ {
+		wordCount := l.Mocker.Random().IntBetween(3, 10)
+		if i == 0 {
+			sentences = l.Sentence(wordCount)
+		} else {
+			sentences = sentences + separator + l.Sentence(wordCount)
+		}
+	}
+
+	return sentences
+}
+
+func (l *LoremGenerator) Slug(wordCount int) string {
+	var words = l.Words(wordCount)
+	return help.Slugify(words)
+}
+
+func (l *LoremGenerator) Paragraph(sentenceCount int) string {
+	paragraph := ""
+
+	for i := 0; i < sentenceCount; i++ {
+		wordCount := l.Mocker.Random().IntBetween(3, 10)
+		if i == 0 {
+			paragraph = l.Sentence(wordCount)
+		} else {
+			paragraph = paragraph + " " + l.Sentence(wordCount)
+		}
+	}
+
+	return paragraph
+}
+
+func (l *LoremGenerator) Paragraphs(paragraphCount int, separator string) string {
+	paragraphs := ""
+	if separator == "" {
+		separator = NEW_LINE
+	}
+
+	for i := 0; i < paragraphCount; i++ {
+		sentenceCount := l.Mocker.Random().IntBetween(3, 10)
+		if i == 0 {
+			paragraphs = l.Paragraph(sentenceCount)
+		} else {
+			paragraphs = paragraphs + separator + l.Paragraph(sentenceCount)
+		}
+	}
+
+	return paragraphs
+}
+
+func (l *LoremGenerator) Lines(lineCount int) string {
+	return l.Sentences(lineCount, "\n")
+}
+
+func (l *LoremGenerator) Text(times int) string {
+	methods := [...]string{
+		"sentence",
+		"sentences",
+		"paragraph",
+		"paragraphs",
+	}
+
+	result := ""
+	for i := 0; i < times; i++ {
+		randomMethod := l.Mocker.Random().RandomElement(methods[:])
+		randomCount := l.Mocker.Random().IntBetween(3, 10)
+		switch randomMethod {
+		case "sentence":
+			result = result + l.Sentence(randomCount)
+		case "sentences":
+			result = result + l.Sentences(randomCount, " ")
+		case "paragraph":
+			result = result + l.Paragraph(randomCount)
+		case "paragraphs":
+			result = result + l.Paragraphs(randomCount, NEW_LINE)
+		}
+	}
+
+	return result
 }

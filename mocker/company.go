@@ -90,16 +90,16 @@ func (c *CompanyGenerator) Name() string {
 }
 
 func (c *CompanyGenerator) JobTitle() string {
-	titleSize := c.Mocker.IntBetween(1, 3)
+	titleSize := c.Mocker.Random().IntBetween(1, 3)
 
 	switch titleSize {
 	case 1:
-		return c.Mocker.RandomStringElement(jobTitleSectionThree)
+		return c.Mocker.Random().RandomStringElement(jobTitleSectionThree)
 	case 2:
-		return fmt.Sprintf("%v %v", c.Mocker.RandomStringElement(jobTitleSectionTwo), c.Mocker.RandomStringElement(jobTitleSectionThree))
+		return fmt.Sprintf("%v %v", c.Mocker.Random().RandomStringElement(jobTitleSectionTwo), c.Mocker.Random().RandomStringElement(jobTitleSectionThree))
 	case 3:
-		return fmt.Sprintf("%v %v %v", c.Mocker.RandomStringElement(jobTitleSectionOne), c.Mocker.RandomStringElement(jobTitleSectionTwo), c.Mocker.RandomStringElement(jobTitleSectionThree))
+		return fmt.Sprintf("%v %v %v", c.Mocker.Random().RandomStringElement(jobTitleSectionOne), c.Mocker.Random().RandomStringElement(jobTitleSectionTwo), c.Mocker.Random().RandomStringElement(jobTitleSectionThree))
 	default:
-		return fmt.Sprintf("%v %v %v", c.Mocker.RandomStringElement(jobTitleSectionOne), c.Mocker.RandomStringElement(jobTitleSectionTwo), c.Mocker.RandomStringElement(jobTitleSectionThree))
+		return fmt.Sprintf("%v %v %v", c.Mocker.Random().RandomStringElement(jobTitleSectionOne), c.Mocker.Random().RandomStringElement(jobTitleSectionTwo), c.Mocker.Random().RandomStringElement(jobTitleSectionThree))
 	}
 }
