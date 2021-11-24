@@ -10,6 +10,7 @@ import (
 const NEW_LINE = "\n"
 
 var _loremGenerator *LoremGenerator
+var lorem models.Lorem
 
 type LoremGenerator struct {
 	Mocker *Mocker
@@ -27,13 +28,13 @@ func NewLoremGenerator(mocker *Mocker) *LoremGenerator {
 }
 
 func (l *LoremGenerator) Word() string {
-	return l.Mocker.Random().RandomStrElement(models.LoremWords[:])
+	return l.Mocker.Random().RandomStrElement(lorem.Words())
 }
 
 func (l *LoremGenerator) Words(number int) string {
 	words := ""
 	for i := 0; i < number; i++ {
-		word := l.Mocker.Random().RandomStrElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomStrElement(lorem.Words())
 		if len(words) == 0 {
 			words = word
 		} else {
@@ -47,7 +48,7 @@ func (l *LoremGenerator) Words(number int) string {
 func (l *LoremGenerator) Sentence(wordCount int) string {
 	sentence := ""
 	for i := 0; i < wordCount; i++ {
-		word := l.Mocker.Random().RandomStrElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomStrElement(lorem.Words())
 		if len(sentence) == 0 {
 			sentence = strings.ToUpper(string(word[0])) + word[1:]
 		} else {

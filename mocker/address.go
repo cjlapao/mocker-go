@@ -19,13 +19,16 @@ func (g *AddressGenerator) City() string {
 
 	locale := address.Get(g.Locale)
 
-	if hasPrefix {
+	if hasPrefix && len(locale.Prefixes()) > 0 {
 		result = g.Mocker.Random().RandomStrElement(locale.Prefixes())
 	}
 
-	result = result + " " + g.Mocker.Random().RandomStrElement(locale.Names())
+	if len(result) > 0 {
+		result = result + " "
+	}
+	result = result + g.Mocker.Random().RandomStrElement(locale.Names())
 
-	if hasSuffix {
+	if hasSuffix && len(locale.Suffixes()) > 0 {
 		result = result + g.Mocker.Random().RandomStrElement(locale.Suffixes())
 	}
 

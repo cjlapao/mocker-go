@@ -18,6 +18,9 @@ var versionSvc = version.Get()
 
 func main() {
 	versionSvc.Minor = 1
+	versionSvc.Name = "Faker API"
+	versionSvc.Author = "Carlos Lapao"
+	versionSvc.License = "MIT"
 	getVersion := helper.GetFlagSwitch("version", false)
 	if getVersion {
 		format := helper.GetFlagValue("o", "json")

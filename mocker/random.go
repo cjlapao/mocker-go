@@ -25,6 +25,9 @@ func (m *RandomGenerator) RandomInt(max int) int {
 }
 
 func (m *RandomGenerator) RandomStrElement(a []string) string {
+	if len(a) == 0 {
+		return ""
+	}
 	i := m.IntBetween(0, len(a)-1)
 	return a[i]
 }

@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"strconv"
 
 	"net/http"
 
@@ -45,8 +47,6 @@ func NewAPIController(router *mux.Router, repo repositories.Repository) *Control
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/login", controller.Login).Methods("POST")
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/validate", controller.Validate).Methods("GET")
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator", controller.Generator).Methods("GET")
-	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/address/city", controller.GetAddressCity).Methods("GET")
-	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/address/country", controller.GetAddressCountry).Methods("GET")
 
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/train", controller.TrainModel).Methods("GET")
 	globalController = &controller
@@ -76,9 +76,18 @@ func handleRequests() {
 	router.Use(commonMiddleware)
 	router.HandleFunc(serviceProvider.Context.ApiPrefix+"/", homePage)
 	_ = NewAPIController(router, repo)
+
+	registerRoutes()
+
 	logger.Info("Api listening on http://localhost:" + serviceProvider.Context.ApiPort + serviceProvider.Context.ApiPrefix)
 	logger.Success("Finished Init")
 	log.Fatal(http.ListenAndServe(":"+serviceProvider.Context.ApiPort, router))
+}
+
+func registerRoutes() {
+	registerAddressRoutes()
+	registerBooleanRoutes()
+	registerLoremRoutes()
 }
 
 func commonMiddleware(next http.Handler) http.Handler {
@@ -125,4 +134,52 @@ func getRequestLang(r *http.Request) language.Locale {
 	}
 
 	return language.FromString(queryLanguage)
+}
+
+func getRequestQueryValue(r *http.Request, key string) (interface{}, error) {
+	keyValue := r.URL.Query().Get(key)
+	if keyValue == "" {
+		return nil, errors.New("key was not found")
+	}
+
+	return keyValue, nil
+}
+
+func getRequestIntValue(r *http.Request, key string) int64 {
+	queryValue, err := getRequestQueryValue(r, key)
+	if err != nil {
+		return -1
+	}
+
+	value, err := strconv.Atoi(fmt.Sprintf("%v", queryValue))
+
+	if err != nil {
+		return -1
+	}
+
+	return int64(value)
+}
+
+func getRequestStrValue(r *http.Request, key string) string {
+	value, err := getRequestQueryValue(r, key)
+	if err != nil {
+		return ""
+	}
+
+	return fmt.Sprintf("%v", value)
+}
+
+func getRequestBoolValue(r *http.Request, key string, defValue bool) bool {
+	queryValue, err := getRequestQueryValue(r, key)
+	if err != nil {
+		return defValue
+	}
+
+	value, err := strconv.ParseBool(fmt.Sprintf("%v", queryValue))
+
+	if err != nil {
+		return defValue
+	}
+
+	return value
 }
