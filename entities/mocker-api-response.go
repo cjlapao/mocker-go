@@ -1,5 +1,6 @@
 package entities
 
 type MockerApiResponse struct {
-	Message string `json:"message"`
+	Query string                 `json:"query"`
+	Value map[string]interface{} `json:"value"`
 }

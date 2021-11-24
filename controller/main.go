@@ -6,6 +6,7 @@ import (
 
 	"net/http"
 
+	"github.com/cjlapao/common-go/language"
 	commonLogger "github.com/cjlapao/common-go/log"
 	"github.com/cjlapao/common-go/version"
 	"github.com/cjlapao/mocker-go/database"
@@ -44,6 +45,8 @@ func NewAPIController(router *mux.Router, repo repositories.Repository) *Control
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/login", controller.Login).Methods("POST")
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/validate", controller.Validate).Methods("GET")
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator", controller.Generator).Methods("GET")
+	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/address/city", controller.GetAddressCity).Methods("GET")
+	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/address/country", controller.GetAddressCountry).Methods("GET")
 
 	controller.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/train", controller.TrainModel).Methods("GET")
 	globalController = &controller
@@ -110,4 +113,16 @@ func pushTestData() {
 	// 	logger.Info("Importing Demo people")
 	// 	repo.UpsertManyPersons(importData.People)
 	// }
+}
+
+func getRequestLang(r *http.Request) language.Locale {
+	queryLanguage := r.URL.Query().Get("lang")
+	if queryLanguage == "" {
+		queryLanguage = "en"
+	}
+	if r.Header.Get("Accept-Language") != "" {
+		queryLanguage = r.Header.Get("Accept-Language")
+	}
+
+	return language.FromString(queryLanguage)
 }

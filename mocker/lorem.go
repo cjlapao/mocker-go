@@ -27,13 +27,13 @@ func NewLoremGenerator(mocker *Mocker) *LoremGenerator {
 }
 
 func (l *LoremGenerator) Word() string {
-	return l.Mocker.Random().RandomElement(models.LoremWords[:])
+	return l.Mocker.Random().RandomStrElement(models.LoremWords[:])
 }
 
 func (l *LoremGenerator) Words(number int) string {
 	words := ""
 	for i := 0; i < number; i++ {
-		word := l.Mocker.Random().RandomElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomStrElement(models.LoremWords[:])
 		if len(words) == 0 {
 			words = word
 		} else {
@@ -47,7 +47,7 @@ func (l *LoremGenerator) Words(number int) string {
 func (l *LoremGenerator) Sentence(wordCount int) string {
 	sentence := ""
 	for i := 0; i < wordCount; i++ {
-		word := l.Mocker.Random().RandomElement(models.LoremWords[:])
+		word := l.Mocker.Random().RandomStrElement(models.LoremWords[:])
 		if len(sentence) == 0 {
 			sentence = strings.ToUpper(string(word[0])) + word[1:]
 		} else {
@@ -128,7 +128,7 @@ func (l *LoremGenerator) Text(times int) string {
 
 	result := ""
 	for i := 0; i < times; i++ {
-		randomMethod := l.Mocker.Random().RandomElement(methods[:])
+		randomMethod := l.Mocker.Random().RandomStrElement(methods[:])
 		randomCount := l.Mocker.Random().IntBetween(3, 10)
 		switch randomMethod {
 		case "sentence":

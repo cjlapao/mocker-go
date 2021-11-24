@@ -83,7 +83,8 @@ func (c *Controller) Generator(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := entities.MockerApiResponse{
-		Message: message,
+		Query: queryType,
+		Value: map[string]interface{}{queryType: message},
 	}
 
 	json.NewEncoder(w).Encode(response)
@@ -141,7 +142,7 @@ func (c *Controller) TrainModel(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := entities.MockerApiResponse{
-		Message: message,
+		Value: map[string]interface{}{queryType: message},
 	}
 
 	json.NewEncoder(w).Encode(response)

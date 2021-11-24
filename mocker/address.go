@@ -1,33 +1,41 @@
 package mocker
 
-import "github.com/cjlapao/mocker-go/models"
+import (
+	"github.com/cjlapao/common-go/language"
+	"github.com/cjlapao/mocker-go/models"
+)
 
 type AddressGenerator struct {
 	Mocker *Mocker
-}
-
-func NewAddress() *AddressGenerator {
-	generator := AddressGenerator{}
-	generator.Mocker = New()
-
-	return &generator
+	Locale language.Locale
 }
 
 func (g *AddressGenerator) City() string {
 	hasPrefix := g.Mocker.Boolean().ChanceOfBool(10)
 	hasSuffix := g.Mocker.Boolean().ChanceOfBool(25)
 	result := ""
+
+	var address models.Address
+
+	locale := address.Get(g.Locale)
+
 	if hasPrefix {
-		result = g.Mocker.Random().RandomElement(models.CityPrefix[:])
+		result = g.Mocker.Random().RandomStrElement(locale.Prefixes())
 	}
-	result = result + " " + g.Mocker.Random().RandomElement(models.UsCityNames[:])
+
+	result = result + " " + g.Mocker.Random().RandomStrElement(locale.Names())
+
 	if hasSuffix {
-		result = result + g.Mocker.Random().RandomElement(models.CitySuffix[:])
+		result = result + g.Mocker.Random().RandomStrElement(locale.Suffixes())
 	}
 
 	return result
 }
 
 func (g *AddressGenerator) Country() string {
-	return g.Mocker.Random().RandomElement(models.Country[:])
+	var address models.Address
+
+	locale := address.Get(g.Locale)
+
+	return g.Mocker.Random().RandomStrElement(locale.Countries())
 }
