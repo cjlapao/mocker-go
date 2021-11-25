@@ -88,6 +88,7 @@ func registerRoutes() {
 	registerAddressRoutes()
 	registerBooleanRoutes()
 	registerLoremRoutes()
+	registerNameRoutes()
 }
 
 func commonMiddleware(next http.Handler) http.Handler {
@@ -137,11 +138,12 @@ func getRequestLang(r *http.Request) language.Locale {
 }
 
 func getRequestQueryValue(r *http.Request, key string) (interface{}, error) {
-	keyValue := r.URL.Query().Get(key)
-	if keyValue == "" {
+	keyExists := r.URL.Query().Has(key)
+	if !keyExists {
 		return nil, errors.New("key was not found")
 	}
 
+	keyValue := r.URL.Query().Get(key)
 	return keyValue, nil
 }
 

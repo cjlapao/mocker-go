@@ -33,8 +33,11 @@ func (m Mocker) Company() *CompanyGenerator {
 	return NewCompanyGenerator(New())
 }
 
-func (m Mocker) Names() *NameGenerator {
-	return NewNameGenerator(New())
+func (m Mocker) Name() *NameGenerator {
+	return &NameGenerator{
+		Mocker: New(),
+		Locale: language.English,
+	}
 }
 
 func (m Mocker) Date() *DateGenerator {

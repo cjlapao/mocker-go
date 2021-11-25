@@ -3,13 +3,22 @@ package models
 import "github.com/cjlapao/common-go/language"
 
 type AddressLocalData interface {
-	Prefixes() []string
-	Suffixes() []string
-	Names() []string
+	CityPrefixes() []string
+	CitySuffixes() []string
+	CityNames() []string
 	Countries() []string
+	PostCode() []string
+	State() []string
+	StatePostcodes() map[string]StatePostcode
 }
 
 type AddressLocalCities interface {
+}
+
+type StatePostcode struct {
+	Min      int
+	Max      int
+	Patterns []string
 }
 
 type Address struct{}
@@ -17,14 +26,14 @@ type Address struct{}
 func (a Address) Get(locale language.Locale) AddressLocalData {
 	switch locale {
 	case language.English:
-		return English{}
+		return EnglishAddress{}
 	case language.EnglishUnitedKingdom:
-		return English{}
+		return EnglishUnitedKingdom{}
 	case language.EnglishUnitedStates:
-		return English{}
+		return EnglishAddress{}
 	case language.PortuguesePortugal:
-		return PortuguesePortugal{}
+		return PortuguesePortugalAddress{}
 	default:
-		return English{}
+		return EnglishAddress{}
 	}
 }

@@ -26,12 +26,12 @@ type Test struct {
 }
 
 func (t Test) Name() string {
-	return mocker.New().Names().Name()
+	return mocker.New().Name().Name()
 }
 
 func JustDoIt(templateContent string) string {
 	td := Test{}
-	td.NameCalculated = mocker.New().Names().Name()
+	td.NameCalculated = mocker.New().Name().Name()
 	t, err := template.New("parsedTemplate").Parse(templateContent)
 
 	if err != nil {
