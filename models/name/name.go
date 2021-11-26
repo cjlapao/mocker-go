@@ -7,6 +7,9 @@ type NameLocalData interface {
 	FemaleFirstNames() []string
 	MaleFirstNames() []string
 	LastNames() []string
+	JobDescriptor() []string
+	JobLevel() []string
+	JobName() []string
 }
 
 type Name struct{}

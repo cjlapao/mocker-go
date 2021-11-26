@@ -1,6 +1,8 @@
 package models
 
-import "github.com/cjlapao/common-go/language"
+import (
+	"github.com/cjlapao/common-go/language"
+)
 
 type AddressLocalData interface {
 	CityPrefixes() []string

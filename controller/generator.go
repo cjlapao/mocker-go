@@ -26,12 +26,6 @@ func (c *Controller) Generator(w http.ResponseWriter, r *http.Request) {
 	case "company.name":
 		companyName := faker.Company().Name()
 		message = fmt.Sprintf("[Fake Company.Name], %v", companyName)
-	case "names.surname":
-		surname := faker.Name().Name()
-		message = fmt.Sprintf("[Fake Names.Surname], %v", surname)
-	case "boolean.chancesof":
-		booleanResult := faker.Boolean().ChanceOfBool(75)
-		message = fmt.Sprintf("[Fake boolean.changesOf], %v", booleanResult)
 	case "date.between":
 		dateInbetween := faker.Date().Between(time.Date(2019, 1, 1, 0, 0, 0, 0, time.Local), time.Date(2021, 10, 31, 23, 59, 59, 999, time.Local))
 		message = fmt.Sprintf("[Fake date.between], %v", dateInbetween)

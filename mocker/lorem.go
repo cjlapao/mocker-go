@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/cjlapao/mocker-go/help"
-	"github.com/cjlapao/mocker-go/models"
+	models "github.com/cjlapao/mocker-go/models/lorem"
 )
 
 const NEW_LINE = "\n"

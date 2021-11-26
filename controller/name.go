@@ -33,7 +33,20 @@ func (c *Controller) GetNameByGender(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func (c *Controller) GetJobTitle(w http.ResponseWriter, r *http.Request) {
+	var response entities.MockerApiResponse
+
+	response.Query = "Fake Job Title"
+	faker := mocker.New().Name()
+	faker.Locale = getRequestLang(r)
+	result := faker.JobTitle()
+
+	response.Value = map[string]interface{}{"job_title": result}
+	json.NewEncoder(w).Encode(response)
+}
+
 func registerNameRoutes() {
 	globalController.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/name", globalController.GetName).Methods("GET")
 	globalController.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/name/{gender:[a-zA-Z]+}", globalController.GetNameByGender).Methods("GET")
+	globalController.Router.HandleFunc(serviceProvider.Context.ApiPrefix+"/generator/name/job-title", globalController.GetJobTitle).Methods("GET")
 }

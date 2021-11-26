@@ -6,7 +6,7 @@ import (
 
 	"github.com/cjlapao/common-go/cryptorand"
 	"github.com/cjlapao/common-go/language"
-	"github.com/cjlapao/mocker-go/models"
+	models "github.com/cjlapao/mocker-go/models/address"
 	regen "github.com/zach-klippenstein/goregen"
 )
 

@@ -40,6 +40,13 @@ func (m Mocker) Name() *NameGenerator {
 	}
 }
 
+func (m Mocker) Person() *PersonGenerator {
+	return &PersonGenerator{
+		Mocker: New(),
+		Locale: language.English,
+	}
+}
+
 func (m Mocker) Date() *DateGenerator {
 	return NewDateGenerator(New())
 }

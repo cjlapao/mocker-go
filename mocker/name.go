@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/cjlapao/common-go/language"
-	"github.com/cjlapao/mocker-go/models"
+	models "github.com/cjlapao/mocker-go/models/name"
 )
 
 type NameGenerator struct {
@@ -20,6 +20,7 @@ func (n *NameGenerator) Name() string {
 		return n.NameByGender("female")
 	}
 }
+
 func (n *NameGenerator) NameByGender(gender string) string {
 	var name models.Name
 	var firstNames []string
@@ -57,6 +58,36 @@ func (n *NameGenerator) NameByGender(gender string) string {
 
 	if hasSuffix {
 
+	}
+
+	return result
+}
+
+func (n *NameGenerator) JobTitle() string {
+	var name models.Name
+	result := ""
+
+	locale := name.Get(n.Locale)
+	if len(locale.JobDescriptor()) == 0 && len(locale.JobLevel()) == 0 && len(locale.JobName()) == 0 {
+		return ""
+	}
+
+	if len(locale.JobDescriptor()) > 0 {
+		result += n.Mocker.Random().RandomStrElement(locale.JobDescriptor())
+	}
+
+	if len(locale.JobLevel()) > 0 {
+		if len(result) > 0 {
+			result += " "
+		}
+		result += n.Mocker.Random().RandomStrElement(locale.JobLevel())
+	}
+
+	if len(locale.JobName()) > 0 {
+		if len(result) > 0 {
+			result += " "
+		}
+		result += n.Mocker.Random().RandomStrElement(locale.JobName())
 	}
 
 	return result
